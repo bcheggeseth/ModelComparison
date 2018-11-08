@@ -1,0 +1,31 @@
+. /usr/local/global/etc/global.login.sh
+
+#PBS -q batch
+#PBS -l nodes=2:ppn=32,mem=128GB
+#PBS -l walltime=72:00:00
+#PBS -M bch2@williams.edu -m abe
+#PBS -N MixSimJob6
+#PBS -r y
+#PBS -j oe
+#PBS -k o
+
+
+echo ""
+echo "***Ignore Warnings for access to tty***"
+echo ""
+echo -n "Changing to directory... "
+cd $PBS_O_WORKDIR            
+echo ""
+echo "Our List of nodes:"
+echo ""
+cat $PBS_NODEFILE
+echo ""
+echo -n "Loading module mpi/mpich-x86_64....   "
+module load mpi/mpich-x86_64
+echo "Done!"
+echo ""
+echo -n "Finished program at: "
+date
+echo ""
+export OMP_NUM_THREADS=1
+R CMD BATCH --no-save MixSim6.R
